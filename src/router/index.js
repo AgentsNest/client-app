@@ -1,29 +1,57 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Home",
+    component: Home,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Auth/Login.vue"),
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () =>
+      import(/* webpackChunkName: "profile" */ "../views/Auth/Profile.vue"),
+  },
+  {
+    path: "/client-dashboard",
+    name: "ClientDashboard",
+    component: () => import("../views/ClientDashboard/Index.vue"),
+    meta: { authOnly: true },
+  },
+  {
+    path: "/client-dashboard/property",
+    name: "ClientMyProperty",
+    component: () => import("../views/ClientDashboard/Property.vue"),
+    meta: { authOnly: true },
+  },
+  {
+    path: "/client/my-property/:id",
+    component: () => import("../views/ClientDashboard/ViewProperty.vue"),
+    name: "singleProperty",
+    meta: { authOnly: true },
+  },
+  {
+    path: "/client-dashboard/agents",
+    name: "ClientMyAgents",
+    component: () => import("../views/ClientDashboard/allAgent.vue"),
+    meta: { authOnly: true },
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
