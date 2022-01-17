@@ -1,40 +1,105 @@
 <template>
   <div>
-      <v-img
-          :src="property.images.length == 0 ? property.image : `https://realtsafe-test.s3.ap-south-1.amazonaws.com/Property/${property.images[0].image}` "
-          :lazy-src="property.images.length == 0 ? property.image : `https://realtsafe-test.s3.ap-south-1.amazonaws.com/Property/${property.images[0].image}` "
-          class="pa-5"
-          aspect-ratio="2"
-      >
-          <template v-slot:placeholder>
-              <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-              </v-row>
-          </template>
-          <v-btn class="white rounded-lg" elevation="1" depressed icon @click="$router.go(-1)"><v-icon>mdi-arrow-left</v-icon></v-btn>
-      </v-img>
+      <v-toolbar class="blue darken-3" dark>
+        <v-btn depressed icon @click="$router.go(-1)">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+        <div class="title">{{property.title}}</div>
+        <v-spacer></v-spacer>
+      </v-toolbar>
 
-      <div class="pa-3">
+      <div class="">
           <v-card class="rounded-lg" elevation="1">
               <v-simple-table>
                   <template v-slot:default>
                       <tbody>
-                          <tr><td><strong>Size:</strong></td><td>{{property.size}}</td></tr>
-                          <tr><td><strong>Unit No.:</strong></td><td>{{property.unit}}</td></tr>
-                          <tr><td><strong>Floor:</strong></td><td>{{property.floor}}</td></tr>
-                          <tr><td><strong>Location:</strong></td><td>{{property.location}}</td></tr>
-                          <tr><td><strong>Price:</strong></td><td>{{property.price}}</td></tr>
+                        <tr><td><strong>Size:</strong></td><td>{{property.size}}</td></tr>
+                        <tr><td><strong>Unit No.:</strong></td><td>{{property.unit}}</td></tr>
+                        <tr><td><strong>Floor:</strong></td><td>{{property.floor}}</td></tr>
+                        <tr><td><strong>Location:</strong></td><td>{{property.location}}</td></tr>
+                        <tr><td><strong>Balance:</strong></td><td>{{property.balance}}</td></tr>
+                        <tr><td><strong>Payment Received:</strong></td><td>{{property.paymentreceived}}</td></tr>
+                        <tr><td><strong>Allotment Price:</strong></td><td>{{property.allotmentvalue}}</td></tr>
                       </tbody>
                   </template>
               </v-simple-table>
           </v-card>
 
+          <!-- Allotment + Charges + Taxes -->
+          <v-card class="mt-4">
+              <v-toolbar class="blue darken-3" dense dark>
+                  <div>Allotment + Charges :</div>
+              </v-toolbar>
+              <v-simple-table>
+                  <template v-slot:default>
+                  <thead>
+                      <tr>
+                          <th class="text-left">Charge</th>
+                          <th class="text-left">Amount</th>
+                          <th class="text-left">GST</th>
+                          <th class="text-left">Tax</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr v-for="allotment in property.allotments" :key="allotment.id">
+                          <td>{{ allotment.title }}</td>
+                          <td>{{ allotment.amount }}</td>
+                          <td>{{ allotment.percentage }}%</td>
+                          <td>{{ allotment.tax }}</td>
+                      </tr>
+                  </tbody>
+                  </template>
+              </v-simple-table>
+          </v-card>
+
+          <!-- Payments Received -->
+          <v-card class="mt-4 rounded-lg">
+            <v-toolbar class="blue darken-3" dense dark>
+                <div>Payment Plans</div>
+            </v-toolbar>     
+
+            <v-card v-for="payment in property.payments" :key="payment.id" class="mb-2">
+              <v-card-text>
+                  <div class="d-flex">
+                      <strong>Title</strong>
+                      <v-spacer></v-spacer>
+                      <div>{{payment.title}}</div>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="d-flex">
+                      <strong>Due Date</strong>
+                      <v-spacer></v-spacer>
+                      <div>{{payment.due_date}}</div>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="d-flex">
+                      <strong>Amount Received</strong>
+                      <v-spacer></v-spacer>
+                      <div>{{payment.amount}}</div>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="d-flex">
+                      <strong>Received Date</strong>
+                      <v-spacer></v-spacer>
+                      <div>{{payment.received_date}}</div>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="d-flex">
+                      <strong>Notes</strong>
+                      <v-spacer></v-spacer>
+                      <div>{{payment.notes}}</div>
+                  </div>
+              </v-card-text>
+            </v-card>
+          </v-card>
+
+          <!-- Documents -->
           <v-card class="rounded-lg mt-4" outlined>
               <v-card-subtitle class="py-2 font-weight-bold">Documents</v-card-subtitle>
               <v-card-text class="px-2">
                   <v-row no-gutters>
                       <v-col v-for="pdf in property.documents" :key="pdf.id" cols="12" class="pa-1">
-                          <v-dialog
+                          <!-- <v-dialog
                               v-model="dialog"
                               fullscreen
                               hide-overlay
@@ -56,12 +121,25 @@
                                   <iframe :src="`https://realtsafe-test.s3.ap-south-1.amazonaws.com/Property/${pdf.image}`" frameborder="0" id="iframePdf" height="100%" width="100%"></iframe>
                                   
                               </v-card>
+                          </v-dialog> -->
+
+                          <v-btn block class="text-capitalize text-center" @click="dialog = !dialog">{{pdf.image}}</v-btn>
+
+                          <!-- preview -->
+                          <v-dialog
+                            v-model="dialog"
+                            scrollable
+                          >
+                            <v-card>
+                              <pdf :src="`https://realtsafe-test.s3.ap-south-1.amazonaws.com/Property/${pdf.image}`"></pdf>
+                            </v-card>
                           </v-dialog>
                       </v-col>
                   </v-row>
               </v-card-text>
           </v-card>
 
+          <!-- Image Gallery -->
           <v-card class="rounded-lg mt-4" outlined>
               <v-card-subtitle class="py-2 font-weight-bold">Image Gallery</v-card-subtitle>
               <v-card-text class="px-2 myGallery">
@@ -77,13 +155,15 @@
 
 <script>
 import Client from '../../Apis/Client'
+import pdf from 'vue-pdf'
 
 export default {
   name: 'ViewProperty',
+  components: { pdf },
   data() {
     return {
       property: '',
-      dialog: false
+      dialog: false,
     };
   },
   beforeMount() {

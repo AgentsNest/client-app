@@ -1,5 +1,14 @@
 <template>
     <v-container>
+
+        <v-snackbar v-model="snackbar" transition="scroll-y-transition" top timeout="3000"
+        >
+            {{snackbarText}}
+            <template v-slot:action="{ attrs }">
+                <v-btn small color="pink" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+            </template>
+        </v-snackbar>
+
         <v-img 
             src="../../assets/img/clientlogin.png" 
             lazy-src="../../assets/img/clientlogin.png"
@@ -13,7 +22,6 @@
         </v-card>
 
         <v-card flat class="pa-5">
-            <div>{{errors}}</div>
             <v-text-field
                 label="Email"
                 placeholder="Enter your email"
@@ -48,7 +56,9 @@ export default {
                 password: "",
                 device_name: 'mobile'
             },
-            errors:''
+            errors:'',
+            snackbarText: 'Email Or Password Is Incorrect',
+            snackbar : false
         }
     },
     methods:{
@@ -59,8 +69,8 @@ export default {
                 this.$router.push({ name: "ClientDashboard" });
             })
             .catch((error) => {
-            this.error = 'Wrong details';
-                console.log(error.response);
+                this.errors = error;
+                this.snackbar = true
             });
         },
 }

@@ -1,11 +1,11 @@
 <template>
   <v-card tile height="100vh" width="100vw" style="background: #111827;" class="d-flex justify-center align-center">
-    <div class="logo-text">agnt</div>
-    <div class="dot-anime">
-      <div class="sonar-wrapper py-2">
-        <div class="sonar-emitter"><div class="sonar-wave"></div></div>
+      <div class="logo-text">agnt</div>
+      <div class="dot-anime">
+        <div class="sonar-wrapper py-2">
+          <div class="sonar-emitter"><div class="sonar-wave"></div></div>
+        </div>
       </div>
-    </div>
   </v-card>
 </template>
 
@@ -39,6 +39,11 @@
 </script>
 
 <style scoped>
+.startedBtn{
+  position: absolute;
+  bottom: 10px;
+  width: 80%;
+}
 .logo-text{
   color: #fff;
   font-weight: bold;

@@ -21,7 +21,7 @@
                             <tr><td>Unit No.:</td><td>{{property.unit}}</td></tr>
                             <tr><td>Floor:</td><td>{{property.floor}}</td></tr>
                             <tr><td>Location:</td><td>{{property.location}}</td></tr>
-                            <tr><td>Price:</td><td>{{property.price}}</td></tr>
+                            <tr><td>Allotment Price:</td><td>{{property.allotmentvalue}}</td></tr>
                         </tbody>
                     </template>
                 </v-simple-table>
