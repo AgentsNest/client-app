@@ -73,12 +73,19 @@ export default {
         // }
     },
     created() {
-        Client.clientConnectAgents().then((response) => {
+        /* Client.clientConnectAgents().then((response) => {
             this.agents = response.data;
         });
         Client.clientMyProperty().then((response) => {
             this.properties = response.data;
         });
+        */
+        Client.auth()
+        .then((res) => {
+            this.properties = res.data.properties
+            this.agents = res.data.agents
+            // console.log(res.data)
+        })
     },
 };
 </script>

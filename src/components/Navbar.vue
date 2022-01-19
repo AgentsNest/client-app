@@ -110,7 +110,7 @@ export default {
   },
   created(){
     Client.auth().then((response) => {
-      this.client = response.data.data
+      this.client = response.data
     })
   },
   methods:{
