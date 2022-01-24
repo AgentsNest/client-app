@@ -93,6 +93,64 @@
             </v-card>
           </v-card>
 
+          <!-- All Applicant List -->
+          <v-row>
+          <v-col cols="12">
+              <v-card class="mt-4 rounded-lg">
+                  <v-toolbar flat>
+                      <v-toolbar-title>Applicants</v-toolbar-title>
+                  </v-toolbar>
+                  <v-expansion-panels>
+                      <v-expansion-panel v-if="applicantOneDetails.name !== null">
+                          <v-expansion-panel-header>{{applicantOneDetails.name}}</v-expansion-panel-header>
+                          <v-expansion-panel-content>
+                              <v-simple-table dense>
+                                  <tbody>
+                                      <tr><td><strong>Name:</strong></td><td>{{applicantOneDetails.name}}</td></tr>
+                                      <tr><td><strong>Email:</strong></td><td>{{applicantOneDetails.email}}</td></tr>
+                                      <tr><td><strong>DOB:</strong></td><td>{{applicantOneDetails.dob}}</td></tr>
+                                      <tr><td><strong>PAN No.:</strong></td><td>{{applicantOneDetails.pan}}</td></tr>
+                                      <tr><td><strong>Profession:</strong></td><td>{{applicantOneDetails.professsion}}</td></tr>
+                                      <tr><td><strong>Aadhar No.:</strong></td><td>{{applicantOneDetails.aadhar}}</td></tr>
+                                  </tbody>
+                              </v-simple-table>
+                          </v-expansion-panel-content>
+                      </v-expansion-panel>
+                      <v-expansion-panel v-if="applicantTwoDetails.name !== null">
+                          <v-expansion-panel-header>{{applicantTwoDetails.name}}</v-expansion-panel-header>
+                          <v-expansion-panel-content>
+                              <v-simple-table dense>
+                                  <tbody>
+                                      <tr><td><strong>Name:</strong></td><td>{{applicantTwoDetails.name}}</td></tr>
+                                      <tr><td><strong>Email:</strong></td><td>{{applicantTwoDetails.email}}</td></tr>
+                                      <tr><td><strong>DOB:</strong></td><td>{{applicantTwoDetails.dob}}</td></tr>
+                                      <tr><td><strong>PAN No.:</strong></td><td>{{applicantTwoDetails.pan}}</td></tr>
+                                      <tr><td><strong>Profession:</strong></td><td>{{applicantTwoDetails.professsion}}</td></tr>
+                                      <tr><td><strong>Aadhar No.:</strong></td><td>{{applicantTwoDetails.aadhar}}</td></tr>
+                                  </tbody>
+                              </v-simple-table>
+                          </v-expansion-panel-content>
+                      </v-expansion-panel>
+                      <v-expansion-panel v-if="applicantThreeDetails.name !== null ">
+                          <v-expansion-panel-header>{{applicantThreeDetails.name}}</v-expansion-panel-header>
+                          <v-expansion-panel-content>
+                              <v-simple-table dense>
+                                  <tbody>
+                                      <tr><td><strong>Name:</strong></td><td>{{applicantThreeDetails.name}}</td></tr>
+                                      <tr><td><strong>Email:</strong></td><td>{{applicantThreeDetails.email}}</td></tr>
+                                      <tr><td><strong>DOB:</strong></td><td>{{applicantThreeDetails.dob}}</td></tr>
+                                      <tr><td><strong>PAN No.:</strong></td><td>{{applicantThreeDetails.pan}}</td></tr>
+                                      <tr><td><strong>Profession:</strong></td><td>{{applicantThreeDetails.professsion}}</td></tr>
+                                      <tr><td><strong>Aadhar No.:</strong></td><td>{{applicantThreeDetails.aadhar}}</td></tr>
+                                  </tbody>
+                              </v-simple-table>
+                          </v-expansion-panel-content>
+                      </v-expansion-panel>
+                  </v-expansion-panels>
+              </v-card>
+          </v-col>
+          </v-row>
+
           <!-- Documents -->
           <v-card class="rounded-lg mt-4" outlined>
               <v-card-subtitle class="py-2 font-weight-bold">Documents</v-card-subtitle>
@@ -164,11 +222,17 @@ export default {
     return {
       property: '',
       dialog: false,
+      applicantOneDetails: null,
+      applicantTwoDetails: null,
+      applicantThreeDetails: null,
     };
   },
   beforeMount() {
     Client.singleClientProperty(this.$route.params.id).then(response => {
       this.property = response.data
+      this.applicantOneDetails = JSON.parse(response.data.applicant_one)
+      this.applicantTwoDetails = JSON.parse(response.data.applicant_two)
+      this.applicantThreeDetails = JSON.parse(response.data.applicant_three)
     //   console.log(response.data)
     //   console.log(this.$route.params)
     })

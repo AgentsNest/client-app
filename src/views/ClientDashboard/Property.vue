@@ -6,6 +6,15 @@
 
         <v-card class="mb-4 rounded-lg" v-for="property in properties" :key="property.id">
             <router-link :to="{name: 'singleProperty', params:{id: property.id}}">
+                <v-progress-linear
+                    :value="property.paymentreceived / property.allotmentvalue * 100" 
+                    :color="property.paymentreceived / property.allotmentvalue * 100 > 74 ? 'green' : 'red' " 
+                    height="16"
+                    striped
+                    class="rounded-t-lg"
+                >
+                    <span class="caption font-weight-bold">{{(property.paymentreceived / property.allotmentvalue * 100).toFixed(2)}}%</span>
+                </v-progress-linear>
                 
                 <v-card-title class="grey--text text--darken-3">
                     {{property.title}}

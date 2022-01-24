@@ -3,10 +3,13 @@
         <v-row>
             <v-col>
                 <v-card class="mb-5">
-                    <v-img
-                        :aspect-ratio="16/9"
-                        src="../../assets/img/offer.jpg"
-                    ></v-img>
+                    <v-carousel hide-delimiters height="280">
+                        <v-carousel-item
+                          v-for="(item,i) in updates"
+                          :key="i"
+                          :src="`https://realtsafe-test.s3.ap-south-1.amazonaws.com/Updates/${item.image}`"
+                        ></v-carousel-item>
+                    </v-carousel>
                 </v-card>
 
                 <!-- Notified -->
@@ -59,7 +62,8 @@ export default {
         return {
             properties: [],
             agents: '',
-            dialog: false
+            dialog: false,
+            updates: []
         };
     },
     methods:{
@@ -84,7 +88,8 @@ export default {
         .then((res) => {
             this.properties = res.data.properties
             this.agents = res.data.agents
-            // console.log(res.data)
+            this.updates = res.data.updates
+             //console.log(res.data)
         })
     },
 };
